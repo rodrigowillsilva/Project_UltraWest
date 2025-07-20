@@ -1,0 +1,38 @@
+@startuml class_diagram
+class Diagram {
+  +name: String
+  +elements: List<Element>
+  +addElement(element: Element): void
+  +removeElement(element: Element): void
+}
+
+class Element {
+  +id: String
+  +type: String
+  +properties: Map<String, String>
+  +connectTo(element: Element): void
+}
+
+class Connection {
+  +source: Element
+  +target: Element
+  +type: String
+  +draw(): void
+}
+
+class Note {
+  +content: String
+  +position: Point
+  +attachTo(element: Element): void
+}
+
+class Point {
+  +x: int
+  +y: int
+}
+
+Diagram "1" -- "0..*" Element : contains
+Element "0..*" -- "0..*" Connection : connects
+Element "0..*" -- "0..1" Note : annotated by
+Note "1" -- "0..*" Element : attached to
+@enduml
