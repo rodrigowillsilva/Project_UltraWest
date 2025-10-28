@@ -1,0 +1,22 @@
+{
+  "servers": [
+    {
+      "name": "github_primary",
+      "type": "github",
+      "enabled": true,
+      "description": "Primary GitHub MCP server for Project_UltraWest",
+      "config": {
+        "repositories": [
+          "rodrigowillsilva/Project_UltraWest"
+        ],
+        "cache_enabled": true,
+        "token": "${GITHUB_TOKEN}"
+      }
+    }
+  ],
+  "global_settings": {
+    "log_level": "info",
+    "cache_directory": ".mcp_cache",
+    "request_timeout": 30
+  }
+}

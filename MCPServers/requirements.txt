@@ -1,0 +1,5 @@
+# Python dependencies for MCP Server
+# Optional but recommended for production use
+
+requests>=2.28.0  # For HTTP requests to GitHub API
+python-dotenv>=0.19.0  # For loading environment variables
