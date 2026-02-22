@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dun7mx6gory1e"]
+
+[ext_resource type="Texture2D" uid="uid://5kvyfnesnfd2" path="res://addons/proto-csgs/textures/dark/texture_04.png" id="1_rdxci"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ktkgt"]
+size = Vector3(50, 1, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t56q2"]
+albedo_texture = ExtResource("1_rdxci")
+uv1_triplanar = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_2baju"]
+material = SubResource("StandardMaterial3D_t56q2")
+size = Vector3(50, 1, 50)
+
+[node name="Terrain" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.999998, 0, 0, 0)
+shape = SubResource("BoxShape3D_ktkgt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_2baju")
+skeleton = NodePath("../..")

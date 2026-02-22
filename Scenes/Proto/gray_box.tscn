@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbqrpi1cyyarm"]
+
+[ext_resource type="PackedScene" uid="uid://dun7mx6gory1e" path="res://Scenes/Proto/terrain_proto.tscn" id="1_ks6xi"]
+[ext_resource type="PackedScene" uid="uid://b8gk1skbc2dvs" path="res://Scenes/Proto/player_proto.tscn" id="2_02teh"]
+
+[node name="GrayBox" type="Node3D"]
+
+[node name="Terrain" parent="." instance=ExtResource("1_ks6xi")]
+
+[node name="Player" parent="." instance=ExtResource("2_02teh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.43012, 0)
+
+[node name="WeaponManager" parent="Player/PlayerSystems" index="0" node_paths=PackedStringArray("proto_weapons")]
+proto_weapons = [NodePath("Revolver"), NodePath("Shotgun")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.197284, 0.919042, 0.341234, -0.364305, -0.254421, 0.895853, 0.910144, -0.30105, 0.284619, 0, 11.3661, 0)
+shadow_enabled = true
+
+[editable path="Player"]

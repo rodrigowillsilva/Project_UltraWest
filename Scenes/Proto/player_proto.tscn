@@ -1,0 +1,64 @@
+[gd_scene load_steps=14 format=3 uid="uid://b8gk1skbc2dvs"]
+
+[ext_resource type="Texture2D" uid="uid://bvxyg14yyrmc7" path="res://addons/proto-csgs/textures/purple/texture_01.png" id="1_8nkgt"]
+[ext_resource type="Texture2D" uid="uid://eap128n0s225" path="res://Assets/Proto/Skybox/plains_sunset_2k.hdr" id="1_jvm1i"]
+[ext_resource type="Script" uid="uid://ck5w6sogqcprt" path="res://Scripts/Player/Player.gd" id="1_r1171"]
+[ext_resource type="Script" uid="uid://dpdliqsebx5wj" path="res://Scripts/Player/PlayerSystems.gd" id="3_f78d1"]
+[ext_resource type="Script" uid="uid://cqs33dxfptljo" path="res://Scripts/Weapons/WeaponManager.gd" id="4_efx64"]
+[ext_resource type="Script" uid="uid://fnjbp77ea2jn" path="res://Scripts/Abilities/AbilityManager.gd" id="5_0w4mo"]
+[ext_resource type="Script" uid="uid://dc6q1kxcjqp68" path="res://Scripts/Weapons/WeaponBase.gd" id="5_ewaj0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f60y1"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_vcq0y"]
+panorama = ExtResource("1_jvm1i")
+
+[sub_resource type="Sky" id="Sky_r1171"]
+sky_material = SubResource("PanoramaSkyMaterial_vcq0y")
+
+[sub_resource type="Environment" id="Environment_f78d1"]
+background_mode = 2
+sky = SubResource("Sky_r1171")
+sky_custom_fov = 90.0
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jvm1i"]
+albedo_texture = ExtResource("1_8nkgt")
+uv1_triplanar = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vcq0y"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_r1171")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_f60y1")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+environment = SubResource("Environment_f78d1")
+
+[node name="PlayerSystems" type="Node3D" parent="."]
+script = ExtResource("3_f78d1")
+
+[node name="WeaponManager" type="Node3D" parent="PlayerSystems" node_paths=PackedStringArray("proto_weapons")]
+script = ExtResource("4_efx64")
+proto_weapons = [null, null]
+
+[node name="Revolver" type="Node3D" parent="PlayerSystems/WeaponManager"]
+script = ExtResource("5_ewaj0")
+weapon_id = &"revolver"
+
+[node name="Shotgun" type="Node3D" parent="PlayerSystems/WeaponManager"]
+script = ExtResource("5_ewaj0")
+weapon_id = &"shotgun"
+
+[node name="AbilityManager" type="Node3D" parent="PlayerSystems"]
+script = ExtResource("5_0w4mo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_jvm1i")
+mesh = SubResource("CapsuleMesh_vcq0y")
