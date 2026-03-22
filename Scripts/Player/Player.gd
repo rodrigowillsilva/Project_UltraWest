@@ -8,6 +8,8 @@ class_name Player
 
 var _pitch_radians: float = 0.0
 
+const test1 = 100
+
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -66,12 +68,11 @@ func _get_gravity() -> float:
 
 func _handle_weapon_input(event: InputEvent) -> void:
 	if event.is_action_pressed(InputActions.WEAPON_1):
-		player_systems.request_weapon_switch(1)
+		player_systems.request_weapon_switch(GameConstants.WeaponId.REVOLVER)
 	elif event.is_action_pressed(InputActions.WEAPON_2):
-		player_systems.request_weapon_switch(2)
+		player_systems.request_weapon_switch(GameConstants.WeaponId.SHOTGUN)
 	elif Input.is_action_pressed(InputActions.NEXT_WEAPON):
-		var cur_weapon = player_systems.weapon_manager.get_weapons().find(player_systems.weapon_manager.active_weapon)
-		player_systems.request_weapon_switch(cur_weapon + 1)
+		player_systems.request_weapon_switch(GameConstants.WeaponId.NEXT)
 
 func _handle_ability_input(_event: InputEvent) -> void:
 	if Input.is_action_pressed(InputActions.ABILITY):

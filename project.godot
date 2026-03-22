@@ -14,6 +14,10 @@ config/name="Project_UltraWest"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GameVariables="*res://Scripts/Globals/GameVariables.gd"
+
 [input]
 
 move_forward={

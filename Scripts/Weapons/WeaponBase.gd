@@ -1,7 +1,7 @@
 extends Node
 class_name WeaponBase
 
-@export var weapon_id: StringName
+var weapon_id: GameConstants.WeaponId
 
 func on_equipped() -> void:
 	pass

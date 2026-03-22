@@ -8,6 +8,7 @@ func _ready() -> void:
 	weapon_manager.weapon_equipped.connect(_on_weapon_equipped)
 	# Initialize ability for starting weapon.
 	_on_weapon_equipped(weapon_manager.active_weapon.weapon_id)
+	
 
 func request_weapon_switch(slot: int) -> void:
 	# Rule: all abilities cancel on weapon switch.
@@ -26,5 +27,5 @@ func request_ability_release() -> void:
 func get_movement_layer(delta: float) -> MovementLayer:
 	return ability_manager.get_movement_layer(delta)
 
-func _on_weapon_equipped(weapon_id: StringName) -> void:
+func _on_weapon_equipped(weapon_id: GameConstants.WeaponId) -> void:
 	ability_manager.set_active_for_weapon(weapon_id)

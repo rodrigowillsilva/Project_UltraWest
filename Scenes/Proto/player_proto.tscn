@@ -44,17 +44,14 @@ environment = SubResource("Environment_f78d1")
 [node name="PlayerSystems" type="Node3D" parent="."]
 script = ExtResource("3_f78d1")
 
-[node name="WeaponManager" type="Node3D" parent="PlayerSystems" node_paths=PackedStringArray("proto_weapons")]
+[node name="WeaponManager" type="Node3D" parent="PlayerSystems"]
 script = ExtResource("4_efx64")
-proto_weapons = [null, null]
 
 [node name="Revolver" type="Node3D" parent="PlayerSystems/WeaponManager"]
 script = ExtResource("5_ewaj0")
-weapon_id = &"revolver"
 
 [node name="Shotgun" type="Node3D" parent="PlayerSystems/WeaponManager"]
 script = ExtResource("5_ewaj0")
-weapon_id = &"shotgun"
 
 [node name="AbilityManager" type="Node3D" parent="PlayerSystems"]
 script = ExtResource("5_0w4mo")

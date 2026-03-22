@@ -16,7 +16,7 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
 - DEV-007 - Implement Core Abilities (Sprint & Grapple) (P1, Proto)
   - Inherit from `AbilityBase`. Physics logic for Grapple and Speed Boost.
 - DEV-008 - Player Controller State Machine scaffold (P2, Proto)
- 	- Movement states scaffold (ground/air), clean transitions, hooks for abilities.
+  - Movement states scaffold (ground/air), clean transitions, hooks for abilities.
 - DEV-004 - Arena greybox test scene (P1, Proto)
   - Traversal lanes, verticality check, sight lines, spawn points.
 - AV-001 - Art direction brief (P2, Slice)
@@ -34,8 +34,6 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
 - DOC-004 - Initial techinical architecturing in GDD (P1, Proto)
   - Architecture the mais systems and designs of the techincal side of the game in the GDD.
 
-- DEV-005 - Base Player Controller (Kinematic) (P1, Proto)
-  - Basic FPS movement (Walk, Jump, Gravity), Camera controller.
 - DEV-002 - Weapon System Architecture (Base Classes) (P1, Proto)
   - `WeaponBase` class (shoot, reload, ammo), `WeaponManager` (inventory, switching logic, "reload-on-holster").
 

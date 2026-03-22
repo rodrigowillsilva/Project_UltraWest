@@ -10,7 +10,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_active_ability.physics_tick(delta)
 
-func set_active_for_weapon(weapon_id: StringName) -> void:
+func set_active_for_weapon(weapon_id: GameConstants.WeaponId) -> void:
 	cancel_active()
 
 	var new_ability: AbilityBase = _build_ability_for_weapon(weapon_id)
@@ -45,9 +45,9 @@ func get_movement_layer(delta: float) -> MovementLayer:
 		return MovementLayer.identity()
 	return _active_ability.get_movement_layer(delta)
 
-func _build_ability_for_weapon(weapon_id: StringName) -> AbilityBase:
+func _build_ability_for_weapon(weapon_id: GameConstants.WeaponId) -> AbilityBase:
 	# Proto: Revolver always provides Sprint. Extend later for other weapons.
-	if weapon_id == &"revolver":
+	if weapon_id == GameConstants.WeaponId.REVOLVER:
 		var ability: AbilityBase = SprintAbility.new()
 		return ability
 	return null
