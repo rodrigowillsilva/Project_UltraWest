@@ -34,9 +34,6 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
 - DOC-004 - Initial techinical architecturing in GDD (P1, Proto)
   - Architecture the mais systems and designs of the techincal side of the game in the GDD.
 
-- DEV-002 - Weapon System Architecture (Base Classes) (P1, Proto)
-  - `WeaponBase` class (shoot, reload, ammo), `WeaponManager` (inventory, switching logic, "reload-on-holster").
-
 ## Done
 
 - DESIGN-001 - Core GDD revision (P1, Proto)
@@ -55,3 +52,6 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
   - Basic FPS movement (Walk, Jump, Gravity), Camera controller.
 - DEV-003 - Ability System Architecture (P1, Proto)
   - `AbilityBase` class, Hooking abilities into the Player Controller (velocity overrides).
+- DEV-002 - Weapon System Architecture (Base Classes) (P1, Proto)
+  - `WeaponBase` class with ammo/reload, timed fire cooldown and timed holster/manual reload.
+  - `WeaponManager` switching lifecycle (equip/unequip), active weapon routing, and slot/next switching.

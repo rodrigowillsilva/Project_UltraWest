@@ -8,8 +8,6 @@ class_name Player
 
 var _pitch_radians: float = 0.0
 
-const test1 = 100
-
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -71,19 +69,29 @@ func _handle_weapon_input(event: InputEvent) -> void:
 		player_systems.request_weapon_switch(GameConstants.WeaponId.REVOLVER)
 	elif event.is_action_pressed(InputActions.WEAPON_2):
 		player_systems.request_weapon_switch(GameConstants.WeaponId.SHOTGUN)
-	elif Input.is_action_pressed(InputActions.NEXT_WEAPON):
+	elif event.is_action_pressed(InputActions.NEXT_WEAPON):
 		player_systems.request_weapon_switch(GameConstants.WeaponId.NEXT)
+
+func _handle_combat_input(event: InputEvent) -> void:
+	if event.is_action_pressed(InputActions.FIRE_PRIMARY):
+		player_systems.request_fire_press()
+	elif event.is_action_released(InputActions.FIRE_PRIMARY):
+		player_systems.request_fire_release()
+
+	if event.is_action_pressed(InputActions.RELOAD):
+		player_systems.request_reload()
 
 func _handle_ability_input(_event: InputEvent) -> void:
 	if Input.is_action_pressed(InputActions.ABILITY):
 		player_systems.request_ability_press()
-	elif Input.is_action_pressed(InputActions.ABILITY):
+	elif Input.is_action_just_released(InputActions.ABILITY):
 		player_systems.request_ability_release()
 
 
 #========= INPUT EVENTS =========#
 func _unhandled_input(event: InputEvent) -> void:
 	_handle_weapon_input(event)
+	_handle_combat_input(event)
 	_handle_ability_input(event)
 	if event.is_action_pressed("ui_cancel"):
 		var new_mode: int = Input.MOUSE_MODE_VISIBLE

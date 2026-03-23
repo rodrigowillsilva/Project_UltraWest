@@ -10,6 +10,9 @@
 [node name="Player" parent="." instance=ExtResource("2_02teh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.43012, 0)
 
+[node name="Shotgun" parent="Player/PlayerSystems/WeaponManager" index="1"]
+weapon_id = 1
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.197284, 0.919042, 0.341234, -0.364305, -0.254421, 0.895853, 0.910144, -0.30105, 0.284619, 0, 11.3661, 0)
 shadow_enabled = true

@@ -1,5 +1,12 @@
 # Changelog
 
+## 22/03/2026
+
+- feat(weapons): Completed DEV-002 WeaponBase core with ammo management, overridable fire hook, fire cooldown timer, and generic reload timer used by manual/holster reload (Scripts/Weapons/WeaponBase.gd)
+- feat(weapons): Expanded WeaponManager lifecycle with equip/unequip flow, active weapon routing (fire/release/reload), and safe next/slot switching (Scripts/Weapons/WeaponManager.gd)
+- feat(player): Wired combat input flow through PlayerSystems to weapon core (primary fire press/release and reload) and fixed input handling edge cases (Scripts/Player/Player.gd, Scripts/Player/PlayerSystems.gd)
+- docs(backlog): Marked DEV-002 as Done (Docs/backlog.md)
+
 ## 08/02/2026
 
 - feat(player): Added FPS CharacterBody3D controller with raw mouse-look, WASD, jump + gravity (Scripts/Player/Player.gd)

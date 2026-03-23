@@ -1,71 +1,58 @@
 # Copilot Notes (Ultra West)
 
-Free-form scratchpad for inter-session memory. I’ll add/rewrite/delete as needed.
+Free-flow scratchpad for inter-session context. Keep this practical and current.
 
 ---
 
-Core direction:
+Current shape of the codebase:
 
-- Professional-ish structure early, but stay Godot-native (Nodes/Scenes + Signals + Resources + Autoloads). Avoid custom frameworks.
-- Prefer clear ownership boundaries so refactors stay local.
+- Keep the architecture Godot-native and boring in a good way: Nodes/Scenes/Signals/Resources over custom frameworks.
+- `Player` owns physics truth (`move_and_slide` and final velocity composition).
+- `PlayerSystems` is the coordinator layer so player logic does not collapse into one script.
+- Weapon and ability systems are split and should stay independently testable.
 
-Architecture stance (current):
+Weapon-side reality right now:
 
-- Use a PlayerSystems-style coordinator node to wire player subsystems so Player.gd doesn’t become a god script.
-- Keep Player (CharacterBody3D) as the owner of the physics loop and move_and_slide().
-- Communication pattern:
-  - Parent/owner coordinates owned children via direct calls.
-  - Children report upward via signals.
-  - Cross-scene / observer concerns via an EventBus Autoload with typed signals.
-  - EventBus preference: typed signals for observer-style events; keep it small and avoid per-frame events.
+- Weapon base now supports a real lifecycle (equip/unequip, trigger press/release, fire cooldown, timed reload behavior).
+- Time logic is timer-driven (fire cadence + one generic reload timer reused by normal reload and holster reload).
+- Concrete weapon scripts should define identity/config (including weapon id), while base class keeps generic behavior.
+- `WeaponManager` handles switching lifecycle and active routing; avoid pushing switching policy down into concrete weapons.
 
-Movement abilities model:
+Input and coordination stance:
 
-- Sprint (Revolver): always-on modifier while Revolver equipped.
-- Abilities are movement layers:
-  - Most are modifiers (speed multiplier, caps, etc.).
-  - Some are “override-ish” by injecting constraints/forces (NOT duplicating the whole movement controller).
+- `Player` samples input events and forwards discrete actions to systems.
+- `PlayerSystems` routes weapon commands (switch/fire/release/reload) and ability commands.
+- Keep this split: input collection in `Player`, game-feature orchestration in `PlayerSystems`.
 
-Ability model update:
+Ability direction (still valid):
 
-- Abilities are weapon-linked behaviors; movement modification is optional (non-movement abilities return an identity movement layer).
-- Abilities are Nodes (Proto) so they can own state and spawn helper nodes (e.g., grapple projectile, holy water area).
+- Abilities are weapon-linked and may or may not modify movement.
+- Movement ability output should remain layered/modifier-based, not a second movement controller.
+- On weapon switch, active ability cancel remains the safest default for prototype consistency.
 
-Grapple (Shotgun) notes (feel + robustness):
+Things to keep an eye on:
 
-- Fast projectile hook travel (not hitscan).
-- Attach to world or enemies.
-- Primary behavior: pull-to-point via winch/reel-in, but player keeps steering influence (swing feel).
-- Gravity stays active; grapple force stronger than gravity. No full floaty suspension by default (still open if feel demands it).
-- Release-to-cancel.
-- Enemy pull is data-driven by enemy type (light pulled to player; heavy may pull player more; some resist/ignore).
-- To keep it robust: treat grapple as a small state machine + clear exit rules.
+- Keep logs/noise low in base scripts; avoid persistent debug prints in core loops.
+- Avoid enum ordering dependencies for weapon slots where possible; prefer explicit mapping in manager or definitions.
+- EventBus should stay for cross-scene observer events only, never per-frame spam.
+- If a system starts needing many booleans for state, it probably wants a small explicit state machine.
 
-Open points to resolve soon:
+Potentially outdated assumptions to revisit soon:
 
-- EventBus contract (minimum set of events + payload keys) for Proto.
-- Where input routing lives (Player vs PlayerSystems) and the exact call chain for: input → weapon switch → ability select → movement.
-- For grapple feel: decide if we ever apply mild gravity reduction or strictly keep gravity unchanged.
+- Some notes previously assumed weapon IDs were configured directly in scene nodes; current direction is to set those in concrete weapon scripts.
+- Previous “next immediate step” notes about implementing base weapon flow are outdated and should not drive planning now.
 
-Decisions locked (Proto):
+What future Copilot sessions should prioritize:
 
-- Input routing: Player (CharacterBody3D) samples continuous input. PlayerSystems receives discrete commands (weapon switch, ability press/release).
-- Ability rule: all abilities cancel on weapon switch.
-- Grapple input: hold-to-grapple; release cancels.
-- Ability integration: abilities provide movement modifiers/forces/constraints; Player still composes final velocity and calls move_and_slide().
-- EventBus: prefer typed signals (cross-scene observers like HUD/Audio/Run flow), avoid per-frame events.
+- Concrete Revolver and Shotgun scripts should be the next place for behavior specialization (fire pattern, ammo profile, feel tuning).
+- Greybox combat iteration should validate whether cooldown/reload values feel right before more architecture changes.
+- Keep docs aligned, but this file should remain design-memory first, not a changelog duplicate.
 
-Guardrails / don’t-forget:
+Guardrails:
 
 - Don’t let EventBus become per-frame or “everything is an event”.
-- Keep base movement single-sourced; grapple injects forces/constraints, it doesn’t replace the entire mover.
-- Prefer stable IDs (StringName) in definitions/events; include Resource refs only when truly helpful.
+- Keep base movement single-sourced; grapple injects constraints/forces, it does not replace movement ownership.
+- Prefer explicit contracts and typed signals over implicit node-path coupling.
+- Keep this note file pruned; remove stale guidance quickly.
 
 ---
-
-Session state (Proto):
-
-- Player scene wiring works; raw mouse motion look is applied in `_unhandled_input`.
-- MovementLayer is integrated; Sprint works as a simple speed multiplier for Revolver.
-- Weapon switching (slots 1/2) + ability press/release routing is in place via PlayerSystems.
-- Next: implement Revolver firing and Grapple ability; bind weapon_1/weapon_2 keys if needed.

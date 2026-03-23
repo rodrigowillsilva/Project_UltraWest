@@ -16,7 +16,16 @@ func request_weapon_switch(slot: int) -> void:
 	weapon_manager.equip_slot(slot)
 	
 func get_current_weapon() -> WeaponBase:
-	return weapon_manager.active_weapon_id
+	return weapon_manager.active_weapon
+
+func request_fire_press() -> void:
+	weapon_manager.press_primary()
+
+func request_fire_release() -> void:
+	weapon_manager.release_primary()
+
+func request_reload() -> void:
+	weapon_manager.reload_active()
 
 func request_ability_press() -> void:
 	ability_manager.press_active()

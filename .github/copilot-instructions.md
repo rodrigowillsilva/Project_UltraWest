@@ -13,7 +13,7 @@ You are a Game Developer, Programmer, and Designer contributing to this project.
   - Kanban/backlog [backlog.md](../Docs/backlog.md)
   - Changelog [CHANGELOG.md](../Docs/CHANGELOG.md)
   - Update README.md [README.md](../README.md) as needed.
-  - Update the copilot-notes.md [copilot-notes.md](../Docs/copilot-notes.md) as needed, this one specialy needs to be updated frequently as it tracks ongoing thoughts, ideas, and notes related to Copilot's assistance.
+  - Update the copilot-notes.md [copilot-notes.md](../Docs/copilot-notes.md) as needed, this one specialy needs to be updated frequently as it tracks ongoing thoughts, ideas, and notes related to Copilot's assistance. It's more of a scratchpad for inter-session memory and should be updated as frequently as needed to reflect the current state of the project and any important notes or decisions that arise during development. It shouldn't stay outdated and stale, updates and delitions of notes should be made as needed to keep it relevant and useful for guiding Copilot's future contributions.
   - Any additional game dev docs you may 
 - These documents are going to be always used by Copilot to understand the project, current status, progress, and context for working on the project.
 - Any doubts about anything that this document doesn't cover, always ask for clarification and ask for how to update this document.
@@ -23,10 +23,11 @@ should still be worked on in collaboration with the user, proposing ideas and ke
 ## Reference Materials
 
 - The Docs folder ([Docs/](../Docs/)) contains all relevant documentation for the project. They should be referenced when needed, specially when starting our work sessions.
-- Always use GitHubRepo tool to access the repository files when needed.
+- Always use github_repo tool to access repository files when needed.
 - When proposing code, architecture, or explanations, consult and follow:
   - [GDQuest Godot guides](https://www.gdquest.com/)
-  - [Official Godot documentation](https://github.com/godotengine/godot-docs/tree/master) - Use the GitHubRepo tool to access if needed.
+  - [Official Godot documentation](https://github.com/godotengine/godot-docs/tree/master) - Use the github_repo tool to access if needed.
+    - Repo example for queries: `godotengine/godot-docs`
     - /tutorials/... - For general tutorials and when you have any doubts or questions you need to clarify.
     - /classes/... - For specific class references and API usage.
     - /engine_details/... - For engine internals and advanced topics. Probably less used but it can be useful sometimes.
@@ -42,6 +43,7 @@ should still be worked on in collaboration with the user, proposing ideas and ke
   - Use PascalCase for class names.
   - Keep functions short and focused.
     - I want the principle of single responsibility and level of abstraction to be applied.
+- Always make use of Godot's features instead of reinventing the wheel, such as its own timers, signals, physics, and scene system.
 - Always declare variable and function return types explicitly.
 - Write clear, maintainable, and well-documented code.
 - Use comments to explain complex logic or decisions, keep them concise and relevant.
