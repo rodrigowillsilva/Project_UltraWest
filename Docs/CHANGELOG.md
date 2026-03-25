@@ -1,5 +1,12 @@
 # Changelog
 
+## 24/03/2026
+
+- feat(weapons): Completed DEV-006 core weapons implementation with concrete Revolver and Shotgun firing behavior (Scripts/Weapons/Revolver.gd, Scripts/Weapons/Shotgun.gd)
+- feat(weapons): Added FirePoint-driven shot origin support in WeaponBase so weapon muzzle origin is editor-configurable (Scripts/Weapons/WeaponBase.gd)
+- feat(weapons): Added shooting debug logging for pellet/shot hit feedback to support tuning iteration (Scripts/Weapons/WeaponBase.gd, Scripts/Weapons/Shotgun.gd)
+- docs(backlog): Marked DEV-006 as Done and promoted DEV-007 to Active (Docs/backlog.md)
+
 ## 22/03/2026
 
 - feat(weapons): Completed DEV-002 WeaponBase core with ammo management, overridable fire hook, fire cooldown timer, and generic reload timer used by manual/holster reload (Scripts/Weapons/WeaponBase.gd)

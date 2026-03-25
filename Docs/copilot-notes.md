@@ -15,7 +15,9 @@ Weapon-side reality right now:
 
 - Weapon base now supports a real lifecycle (equip/unequip, trigger press/release, fire cooldown, timed reload behavior).
 - Time logic is timer-driven (fire cadence + one generic reload timer reused by normal reload and holster reload).
-- Concrete weapon scripts should define identity/config (including weapon id), while base class keeps generic behavior.
+- Concrete weapon scripts now define identity/config (including weapon id), while base class keeps generic behavior.
+- Hitscan is executed via direct physics ray queries from the configured FirePoint transform (`fire_point_path`).
+- Shotgun spread is pellet-based and sampled from FirePoint basis; keep pellet count/spread tuned for performance/feel.
 - `WeaponManager` handles switching lifecycle and active routing; avoid pushing switching policy down into concrete weapons.
 
 Input and coordination stance:
@@ -44,8 +46,9 @@ Potentially outdated assumptions to revisit soon:
 
 What future Copilot sessions should prioritize:
 
-- Concrete Revolver and Shotgun scripts should be the next place for behavior specialization (fire pattern, ammo profile, feel tuning).
-- Greybox combat iteration should validate whether cooldown/reload values feel right before more architecture changes.
+- DEV-007 (Sprint + Grapple) is now the primary gameplay implementation priority.
+- Greybox combat iteration should validate whether cooldown/reload/spread values feel right before more architecture changes.
+- Replace debug print-heavy fire logs with toggled debug tooling/gizmos once combat feel stabilizes.
 - Keep docs aligned, but this file should remain design-memory first, not a changelog duplicate.
 
 Guardrails:

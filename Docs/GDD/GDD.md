@@ -395,7 +395,7 @@ sequenceDiagram
 
 Player Scene Tree (expected, minimal):
 
-```
+```text
 Player (CharacterBody3D)
 ├─ CameraPivot (Node3D)
 │  └─ Camera3D

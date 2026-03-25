@@ -1,10 +1,14 @@
-extends Node
+extends Node3D
 class_name WeaponBase
 
 signal fired(weapon_id: GameConstants.WeaponId, ammo_in_magazine: int)
 signal reloaded(weapon_id: GameConstants.WeaponId, ammo_in_magazine: int)
 
 var weapon_id: GameConstants.WeaponId = GameConstants.WeaponId.REVOLVER
+@export var fire_point_path: NodePath
+@export_flags_3d_physics var hit_collision_mask: int = (1 << (PhysicsLayers.WORLD - 1)) | (1 << (PhysicsLayers.ENEMY - 1))
+@export_range(1.0, 10000.0, 1.0) var max_range: float = 1000.0
+@export var debug_fire: bool = true
 @export_range(1, 999, 1) var magazine_size: int = 6
 @export_range(0.01, 10.0, 0.01) var fire_cooldown_sec: float = 0.25
 @export_range(0.01, 10.0, 0.01) var reload_duration_sec: float = 1.2
@@ -127,4 +131,67 @@ func _ensure_timers() -> void:
 
 func _on_fire() -> void:
 	print("Weapon fired: %s, ammo left: %d" % [str(weapon_id), ammo_in_magazine])
-	pass
+
+func _get_fire_point() -> Node3D:
+	if not fire_point_path.is_empty():
+		var configured: Node3D = get_node_or_null(fire_point_path) as Node3D
+		if configured != null:
+			return configured
+	return self
+
+func _get_fire_origin() -> Vector3:
+	return _get_fire_point().global_position
+
+func _get_fire_basis() -> Basis:
+	return _get_fire_point().global_transform.basis
+
+func _get_fire_forward() -> Vector3:
+	return -_get_fire_basis().z.normalized()
+
+func _shoot_hitscan(direction: Vector3, range_override: float = -1.0) -> Dictionary:
+	if direction.length_squared() <= 0.0:
+		return {}
+
+	var cast_distance: float = max_range
+	if range_override > 0.0:
+		cast_distance = range_override
+
+	var from: Vector3 = _get_fire_origin()
+	var to: Vector3 = from + direction.normalized() * cast_distance
+
+	var world: World3D = get_world_3d()
+	if world == null:
+		return {}
+
+	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to, hit_collision_mask)
+	query.collide_with_areas = true
+
+	var owner_body: PhysicsBody3D = _find_owner_physics_body()
+	if owner_body != null:
+		query.exclude = [owner_body.get_rid()]
+
+	return world.direct_space_state.intersect_ray(query)
+
+func _find_owner_physics_body() -> PhysicsBody3D:
+	var current: Node = self
+	while current != null:
+		if current is PhysicsBody3D:
+			return current as PhysicsBody3D
+		current = current.get_parent()
+	return null
+
+func _debug_shot(result: Dictionary, shot_index: int = 1, shot_total: int = 1) -> void:
+	if not debug_fire:
+		return
+
+	if result.is_empty():
+		print("[%s] Shot %d/%d missed." % [str(weapon_id), shot_index, shot_total])
+		return
+
+	var collider: Object = result.get("collider")
+	var hit_pos: Vector3 = result.get("position", Vector3.ZERO)
+	var collider_name: String = "unknown"
+	if collider != null and collider is Node:
+		collider_name = (collider as Node).name
+
+	print("[%s] Shot %d/%d hit %s at %s" % [str(weapon_id), shot_index, shot_total, collider_name, str(hit_pos)])

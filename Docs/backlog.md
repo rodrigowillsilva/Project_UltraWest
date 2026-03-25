@@ -11,12 +11,12 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
   - Core behaviors, weapon/movement counters, spawn role tags.
 - DESIGN-004 - Run & Night flow refinement (P2, Proto)
   - Clarify pacing, reward cadence, difficulty ramp knobs.
-- DEV-006 - Implement Core Weapons (Revolver & Shotgun) (P1, Proto)
-  - Inherit from `WeaponBase`. Specific firing logic (Hitscan vs Raycast).
 - DEV-007 - Implement Core Abilities (Sprint & Grapple) (P1, Proto)
   - Inherit from `AbilityBase`. Physics logic for Grapple and Speed Boost.
 - DEV-008 - Player Controller State Machine scaffold (P2, Proto)
   - Movement states scaffold (ground/air), clean transitions, hooks for abilities.
+- DEV-009 - Shooting debug tools (P3, Proto)
+  - Visual debug for hitboxes, trajectories, and damage numbers and everything related to shooting to help with development and testing.
 - DEV-004 - Arena greybox test scene (P1, Proto)
   - Traversal lanes, verticality check, sight lines, spawn points.
 - AV-001 - Art direction brief (P2, Slice)
@@ -55,3 +55,6 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
 - DEV-002 - Weapon System Architecture (Base Classes) (P1, Proto)
   - `WeaponBase` class with ammo/reload, timed fire cooldown and timed holster/manual reload.
   - `WeaponManager` switching lifecycle (equip/unequip), active weapon routing, and slot/next switching.
+- DEV-006 - Implement Core Weapons (Revolver & Shotgun) (P1, Proto)
+  - Concrete weapon scripts implemented (`Revolver`, `Shotgun`) with weapon-specific fire behavior.
+  - Fire origin uses configurable `fire_point_path`, and hitscan uses direct physics ray queries.
