@@ -9,5 +9,4 @@ func _ready() -> void:
 
 func _on_fire() -> void:
 	super._on_fire()
-	var result: Dictionary = _shoot_hitscan(_get_fire_forward())
-	_debug_shot(result)
+	_shoot_hitscan(_get_fire_forward())

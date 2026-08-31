@@ -76,7 +76,6 @@ func _complete_reload() -> void:
 		return
 	ammo_in_magazine = magazine_size
 	reloaded.emit(weapon_id, ammo_in_magazine)
-	print("Weapon reloaded: %s, ammo now: %d" % [str(weapon_id), ammo_in_magazine])
 
 func try_fire() -> bool:
 	if not _can_fire():
@@ -130,14 +129,10 @@ func _ensure_timers() -> void:
 	_reload_timer = reload_timer
 
 func _on_fire() -> void:
-	print("Weapon fired: %s, ammo left: %d" % [str(weapon_id), ammo_in_magazine])
+	pass
 
-func _get_fire_point() -> Node3D:
-	if not fire_point_path.is_empty():
-		var configured: Node3D = get_node_or_null(fire_point_path) as Node3D
-		if configured != null:
-			return configured
-	return self
+func _get_fire_point() -> Marker3D:
+	return get_node_or_null(fire_point_path) as Marker3D
 
 func _get_fire_origin() -> Vector3:
 	return _get_fire_point().global_position
@@ -146,7 +141,7 @@ func _get_fire_basis() -> Basis:
 	return _get_fire_point().global_transform.basis
 
 func _get_fire_forward() -> Vector3:
-	return -_get_fire_basis().z.normalized()
+	return -_get_fire_basis().z
 
 func _shoot_hitscan(direction: Vector3, range_override: float = -1.0) -> Dictionary:
 	if direction.length_squared() <= 0.0:
@@ -170,7 +165,9 @@ func _shoot_hitscan(direction: Vector3, range_override: float = -1.0) -> Diction
 	if owner_body != null:
 		query.exclude = [owner_body.get_rid()]
 
-	return world.direct_space_state.intersect_ray(query)
+	var result: Dictionary = world.direct_space_state.intersect_ray(query)
+	_debug_shot(from, to, result)
+	return result
 
 func _find_owner_physics_body() -> PhysicsBody3D:
 	var current: Node = self
@@ -180,18 +177,19 @@ func _find_owner_physics_body() -> PhysicsBody3D:
 		current = current.get_parent()
 	return null
 
-func _debug_shot(result: Dictionary, shot_index: int = 1, shot_total: int = 1) -> void:
+func _debug_shot(from: Vector3, to: Vector3, result: Dictionary) -> void:
 	if not debug_fire:
 		return
 
-	if result.is_empty():
-		print("[%s] Shot %d/%d missed." % [str(weapon_id), shot_index, shot_total])
+	var debug_manager: Node = get_node_or_null("/root/DebugManager")
+	if debug_manager == null:
+		return
+	if not debug_manager.has_method("draw_shot_trace"):
 		return
 
-	var collider: Object = result.get("collider")
-	var hit_pos: Vector3 = result.get("position", Vector3.ZERO)
-	var collider_name: String = "unknown"
-	if collider != null and collider is Node:
-		collider_name = (collider as Node).name
+	var direction: Vector3 = to - from
+	var distance: float = direction.length()
+	if distance <= 0.0:
+		return
 
-	print("[%s] Shot %d/%d hit %s at %s" % [str(weapon_id), shot_index, shot_total, collider_name, str(hit_pos)])
+	debug_manager.call("draw_shot_trace", from, direction.normalized(), distance, result)

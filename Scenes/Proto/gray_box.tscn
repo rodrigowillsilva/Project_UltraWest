@@ -1,9 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bbqrpi1cyyarm"]
+[gd_scene load_steps=5 format=3 uid="uid://bbqrpi1cyyarm"]
 
 [ext_resource type="PackedScene" uid="uid://dun7mx6gory1e" path="res://Scenes/Proto/terrain_proto.tscn" id="1_ks6xi"]
 [ext_resource type="PackedScene" uid="uid://b8gk1skbc2dvs" path="res://Scenes/Proto/player_proto.tscn" id="2_02teh"]
-[ext_resource type="Script" uid="uid://djc6orxyipi3d" path="res://Scripts/Weapons/Revolver.gd" id="3_02teh"]
-[ext_resource type="Script" uid="uid://deo0f8r8bikut" path="res://Scripts/Weapons/Shotgun.gd" id="4_6h2ht"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6h2ht"]
 size = Vector3(6.47437, 3.61243, 1)
@@ -18,31 +16,6 @@ size = Vector3(7.49, 6.205, 1)
 [node name="Player" parent="." instance=ExtResource("2_02teh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.43012, 0)
 
-[node name="CameraPivot" parent="Player" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
-
-[node name="Camera3D" parent="Player/CameraPivot" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-
-[node name="Revolver" parent="Player/PlayerSystems/WeaponManager" index="0" node_paths=PackedStringArray("weapon_raycast")]
-script = ExtResource("3_02teh")
-hit_damage = 991.0
-fire_point_path = NodePath("Marker3D")
-weapon_raycast = NodePath("RayCast3D")
-
-[node name="Marker3D" type="Marker3D" parent="Player/PlayerSystems/WeaponManager/Revolver" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.685502, -0.745228)
-
-[node name="RayCast3D" type="RayCast3D" parent="Player/PlayerSystems/WeaponManager/Revolver" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.647624, -0.780699)
-target_position = Vector3(0, 0, 0)
-
-[node name="Shotgun" parent="Player/PlayerSystems/WeaponManager" index="1"]
-script = ExtResource("4_6h2ht")
-pellet_count = 8
-spread_angle_deg = 8.0
-pellet_damage = 0.0
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.197284, 0.919042, 0.341234, -0.364305, -0.254421, 0.895853, 0.910144, -0.30105, 0.284619, 0, 11.3661, 0)
 shadow_enabled = true
@@ -56,5 +29,3 @@ shape = SubResource("BoxShape3D_6h2ht")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TestShot"]
 mesh = SubResource("BoxMesh_6h2ht")
-
-[editable path="Player"]

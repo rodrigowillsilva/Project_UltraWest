@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b8gk1skbc2dvs"]
+[gd_scene load_steps=15 format=3 uid="uid://b8gk1skbc2dvs"]
 
 [ext_resource type="Texture2D" uid="uid://bvxyg14yyrmc7" path="res://addons/proto-csgs/textures/purple/texture_01.png" id="1_8nkgt"]
 [ext_resource type="Texture2D" uid="uid://eap128n0s225" path="res://Assets/Proto/Skybox/plains_sunset_2k.hdr" id="1_jvm1i"]
@@ -6,7 +6,8 @@
 [ext_resource type="Script" uid="uid://dpdliqsebx5wj" path="res://Scripts/Player/PlayerSystems.gd" id="3_f78d1"]
 [ext_resource type="Script" uid="uid://cqs33dxfptljo" path="res://Scripts/Weapons/WeaponManager.gd" id="4_efx64"]
 [ext_resource type="Script" uid="uid://fnjbp77ea2jn" path="res://Scripts/Abilities/AbilityManager.gd" id="5_0w4mo"]
-[ext_resource type="Script" uid="uid://dc6q1kxcjqp68" path="res://Scripts/Weapons/WeaponBase.gd" id="5_ewaj0"]
+[ext_resource type="Script" uid="uid://djc6orxyipi3d" path="res://Scripts/Weapons/Revolver.gd" id="5_ewaj0"]
+[ext_resource type="Script" uid="uid://deo0f8r8bikut" path="res://Scripts/Weapons/Shotgun.gd" id="6_57ig3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f60y1"]
 
@@ -36,9 +37,11 @@ script = ExtResource("1_r1171")
 shape = SubResource("CapsuleShape3D_f60y1")
 
 [node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="Marker3D" type="Marker3D" parent="CameraPivot"]
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 environment = SubResource("Environment_f78d1")
 
 [node name="PlayerSystems" type="Node3D" parent="."]
@@ -49,9 +52,18 @@ script = ExtResource("4_efx64")
 
 [node name="Revolver" type="Node3D" parent="PlayerSystems/WeaponManager"]
 script = ExtResource("5_ewaj0")
+hit_damage = 100.0
+fire_point_path = NodePath("../../../CameraPivot/Marker3D")
+reload_on_holster_delay_sec = 3.43
 
 [node name="Shotgun" type="Node3D" parent="PlayerSystems/WeaponManager"]
-script = ExtResource("5_ewaj0")
+script = ExtResource("6_57ig3")
+pellet_damage = 20.0
+fire_point_path = NodePath("../../../CameraPivot/Marker3D")
+magazine_size = 4
+fire_cooldown_sec = 0.5
+reload_duration_sec = 1.95
+reload_on_holster_delay_sec = 4.02
 
 [node name="AbilityManager" type="Node3D" parent="PlayerSystems"]
 script = ExtResource("5_0w4mo")

@@ -36,7 +36,8 @@ Things to keep an eye on:
 
 - Keep logs/noise low in base scripts; avoid persistent debug prints in core loops.
 - Avoid enum ordering dependencies for weapon slots where possible; prefer explicit mapping in manager or definitions.
-- EventBus should stay for cross-scene observer events only, never per-frame spam.
+- Prefer parent-routed communication: signals up, direct calls down, and parent relays for peers.
+- Use singleton coordinators only for explicit cross-tree concerns (debug, global state, run entry), never as default communication for gameplay.
 - If a system starts needing many booleans for state, it probably wants a small explicit state machine.
 
 Potentially outdated assumptions to revisit soon:
@@ -51,9 +52,15 @@ What future Copilot sessions should prioritize:
 - Replace debug print-heavy fire logs with toggled debug tooling/gizmos once combat feel stabilizes.
 - Keep docs aligned, but this file should remain design-memory first, not a changelog duplicate.
 
+DEV-009 direction now in-flight:
+
+- Use a generic `DebugManager` singleton service with direct function calls from gameplay systems.
+- Keep debug routing narrow (trace/marker/popups) and avoid introducing a generic gameplay event bus.
+- WeaponBase now routes hitscan debug through manager methods instead of print-heavy shot logs.
+
 Guardrails:
 
-- Don’t let EventBus become per-frame or “everything is an event”.
+- Don’t let global coordinators become “everything is an event”.
 - Keep base movement single-sourced; grapple injects constraints/forces, it does not replace movement ownership.
 - Prefer explicit contracts and typed signals over implicit node-path coupling.
 - Keep this note file pruned; remove stale guidance quickly.

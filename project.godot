@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameVariables="*res://Scripts/Globals/GameVariables.gd"
+DebugManager="*res://Scripts/Managers/DebugManager.gd"
 
 [input]
 

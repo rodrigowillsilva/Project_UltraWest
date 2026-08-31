@@ -51,9 +51,12 @@ should still be worked on in collaboration with the user, proposing ideas and ke
 ## General Workflow
 
 - It starts with user requests for features, fixes, or changes, or simply to ask for what can be done in this part of the project.
+- ALWAYS read the doc files when starting a work session.
 - Propose a plan and workflow for implementing requests or work, discussing with the user to clarify requirements and confirm the approach. Never assume anything without asking the user first. Don't start changing anything until the user has confirmed and approved the plan. Always think as a Game Developer when thinking about working on the project.
+- Never change project/editor setup directly when user action is required in Godot Editor or project settings. Ask the user to perform those steps and then continue based on their feedback.
 - For work that can be done inside GODOT Editor:
   - Propose the work and steps needed, doing the search and study then discussing with the user. After, provide High-Level instructions for the user to implement inside Godot Editor, been more specific if needed in any step. The user will provade feedback after done so the rest of the workflow can continue.
+  - For non-runtime instantiated objects, prefer connecting signals via Godot Editor instead of script `.connect()` calls. Ask the user to create those connections in the editor, then implement or adjust the generated callback methods in code.
 - For coding tasks:
   - Propose aand discuss a plan before coding.
   - They should work from top-down design(top to bottom), depending on the task, lets say if we already had done the high-level design, then we can start with the low-level implementation, but if we are starting a new feature or system, then we should start with the high-level design and then move to low-level implementation. Always ask the user for confirmation before moving from high-level to low-level design and implementation.
@@ -161,6 +164,13 @@ should still be worked on in collaboration with the user, proposing ideas and ke
 - Prefer concise, actionable, and clear updates.
 - Always preserve formatting and structure of docs.
 - Confirm with user before sweeping changes.
+
+## Architecture Stance
+
+- Prefer scene-tree communication: child emits signal upward, parent coordinates and routes, parent may call children directly.
+- For peer communication, route through their common parent; avoid direct sibling coupling.
+- A singleton can be used as a global coordinator only when it represents a true cross-tree boundary (debug services, global state, game flow entry points), not as a default event bus.
+- Avoid generic/global event bus patterns unless explicitly approved by the user for a concrete need.
 
 ## Self Updating Instructions
 

@@ -270,7 +270,7 @@ Primarily aimed for low-end PCs and integrated graphics notebooks, with option f
 
 ### Technical Requirements / Risks
 
-- Event Bus overuse can hide dependencies and create “action at a distance”. Mitigation: use the bus for cross-system notifications, not per-frame movement.
+- Overusing global relays can hide dependencies and create “action at a distance”. Mitigation: default to scene-tree ownership (signals up, direct calls down), and only use singleton coordinators for explicit cross-tree boundaries.
 - Autoload “god objects” can grow unbounded. Mitigation: keep Autoloads as services/state, keep moment-to-moment gameplay in scene-owned nodes.
 - Grapple complexity (projectile, attach rules, enemy pull variants) is a likely bug hotspot. Mitigation: small state machine + clear exit rules (release-to-cancel, invalid target, etc.).
 - Data-driven Resources need stable identifiers for saves/debugging. Mitigation: assign stable IDs (StringName) in definitions.
@@ -290,7 +290,8 @@ This architecture is intentionally lightweight and Godot-native, designed to sca
 
 - Ownership is explicit via the scene tree (parents coordinate owned children).
 - Signals are used for reporting (“something happened”); direct calls are used for required coordination (“do this now”).
-- An EventBus Autoload provides typed signals for cross-scene notifications (UI, audio, run flow), but core movement/weapon logic does not depend on global broadcasts.
+- Peer communication is routed by their common parent; avoid direct sibling coupling.
+- Optional singleton coordinators are allowed only for explicit cross-tree concerns (global debug services, run entry points), not as a default communication bus.
 - Data is defined via Resources (weapon definitions, card definitions, enemy definitions) so gameplay is data-driven.
 
 #### Runtime Ownership (Scene-First)
@@ -303,7 +304,8 @@ This architecture is intentionally lightweight and Godot-native, designed to sca
 
 - Child → parent: Signals (e.g., WeaponManager emits weapon_equipped).
 - Parent → child: Direct calls for coordination (e.g., PlayerSystems tells AbilityManager to activate the ability for the equipped weapon).
-- Non-related systems: EventBus (Autoload) emits typed signals for observers (HUD, audio, run progression).
+- Cross-branch communication: parent/root coordinator captures and relays signals to the target branch.
+- Global-only concerns: optional singleton services may observe signals (e.g., generic debug drawer) without becoming a default event bus.
 
 #### Data (Resources)
 
@@ -323,14 +325,17 @@ flowchart TD
     PlayerSystems --> AbilityManager
     PlayerSystems --> Health
 
-    EventBus["EventBus\n(Autoload)"] --> HUD["HUD / UI"]
-    EventBus --> Audio[Audio]
-    RunManager["Run / Night Manager"] --> EventBus
+    WorldRoot["World / Game Root"] --> HUD["HUD / UI"]
+    RunManager["Run / Night Manager"] -->|signals| WorldRoot
+    PlayerSystems -->|signal: weapon_equipped| WorldRoot
+    WorldRoot -->|relay/update| HUD
+
+    DebugService["DebugService\n(Optional Autoload)"] --> DebugDraw["Debug Drawer"]
+    WeaponManager -->|signal: shot_debug| DebugService
 
     WeaponManager -->|signals: weapon_equipped, ammo_changed| PlayerSystems
     Player -->|queries active ability each physics frame| AbilityManager
     PlayerSystems -->|direct call: set_active_ability | AbilityManager
-    PlayerSystems -->|signal: weapon_equipped| EventBus
 ```
 
 Run/Night State (macro loop):
@@ -357,13 +362,14 @@ sequenceDiagram
     participant PS as PlayerSystems
     participant WM as WeaponManager
     participant AM as AbilityManager
-    participant EB as EventBus
+    participant Root as WorldRoot Coordinator
 
     Input->>PS: request_weapon_switch(slot)
     PS->>WM: equip(slot)
     WM-->>PS: weapon_equipped(weapon_id)
     PS->>AM: set_active_for_weapon(weapon_id)
-    PS->>EB: weapon_equipped(weapon_id)
+    PS->>Root: weapon_equipped(weapon_id)
+    Root->>HUD: relay/update
 ```
 
 Movement + Ability Layering (per physics tick):

@@ -12,16 +12,9 @@ func _ready() -> void:
 func _on_fire() -> void:
 	super._on_fire()
 
-	var hit_count: int = 0
-	for pellet_index: int in range(pellet_count):
+	for _pellet_index: int in range(pellet_count):
 		var direction: Vector3 = _get_spread_direction()
-		var result: Dictionary = _shoot_hitscan(direction)
-		if not result.is_empty():
-			hit_count += 1
-		_debug_shot(result, pellet_index + 1, pellet_count)
-
-	if debug_fire:
-		print("[%s] Pellets hit: %d/%d" % [str(weapon_id), hit_count, pellet_count])
+		_shoot_hitscan(direction)
 
 func _get_spread_direction() -> Vector3:
 	var fire_basis: Basis = _get_fire_basis()

@@ -1,5 +1,14 @@
 # Changelog
 
+## 29/03/2026
+
+- feat(debug): Added generic DebugManager service for visual debug rendering with timed traces and hit markers (Scripts/Managers/DebugManager.gd)
+- refactor(weapons): Replaced print-based shot debug with direct DebugManager calls from WeaponBase hitscan flow (Scripts/Weapons/WeaponBase.gd, Scripts/Weapons/Revolver.gd, Scripts/Weapons/Shotgun.gd)
+- docs(instructions): Updated Copilot workflow to require user-performed Godot Editor/project changes and editor-based signal wiring for non-runtime nodes (.github/copilot-instructions.md)
+- docs(architecture): Replaced EventBus-centric guidance with scene-tree signal routing and parent relay communication model in GDD (Docs/GDD/GDD.md)
+- docs(backlog): Reframed DEV-010 from signal bus implementation to communication routing standardization (Docs/backlog.md)
+- docs(notes): Updated architecture guardrails to prefer parent-routed signals and limited singleton coordinators (Docs/copilot-notes.md)
+
 ## 24/03/2026
 
 - feat(weapons): Completed DEV-006 core weapons implementation with concrete Revolver and Shotgun firing behavior (Scripts/Weapons/Revolver.gd, Scripts/Weapons/Shotgun.gd)

@@ -11,13 +11,9 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
   - Core behaviors, weapon/movement counters, spawn role tags.
 - DESIGN-004 - Run & Night flow refinement (P2, Proto)
   - Clarify pacing, reward cadence, difficulty ramp knobs.
-- DEV-007 - Implement Core Abilities (Sprint & Grapple) (P1, Proto)
-  - Inherit from `AbilityBase`. Physics logic for Grapple and Speed Boost.
 - DEV-008 - Player Controller State Machine scaffold (P2, Proto)
   - Movement states scaffold (ground/air), clean transitions, hooks for abilities.
-- DEV-009 - Shooting debug tools (P3, Proto)
-  - Visual debug for hitboxes, trajectories, and damage numbers and everything related to shooting to help with development and testing.
-- DEV-004 - Arena greybox test scene (P1, Proto)
+- DEV-004 - Refine Arena greybox test scene (P1, Proto)
   - Traversal lanes, verticality check, sight lines, spawn points.
 - AV-001 - Art direction brief (P2, Slice)
   - Stylized 2.5D, readability palette, mood refs.
@@ -25,14 +21,22 @@ DESIGN-, DEV-, AV-, DOC-. Columns: Priority (P1 highest), Milestone (Proto = Pro
   - Western x industrial/metal motifs, layering approach, SFX taxonomy.
 - DOC-001 - Glossary expansion pass (P3, Proto)
   - Add missing mechanics, enemy role tags, upgrade terminology.
+- DEV-010 - Communication routing pass (P2, Proto)
+  - Standardize signal-up/direct-down and parent relay for peer communication; define where singleton coordinators are allowed.
 
 ## Active
 
 - DESIGN/DOC-000 - Docs maintenance (P1, Ongoing)
   - Keep GDD, backlog, changelog updated with progress and decisions.
 
-- DOC-004 - Initial techinical architecturing in GDD (P1, Proto)
-  - Architecture the mais systems and designs of the techincal side of the game in the GDD.
+- DOC-004 - Initial technical architecture in GDD (P1, Proto)
+  - Architecture the main systems and designs of the technical side of the game in the GDD.
+
+- DEV-007 - Implement Core Abilities (Sprint & Grapple) (P1, Proto)
+  - Inherit from `AbilityBase`. Physics logic for Grapple and Speed Boost.
+
+- DEV-009 - Shooting debug tools (P3, Proto)
+  - Visual debug for hitboxes, trajectories, and damage numbers and everything related to shooting to help with development and testing.
 
 ## Done
 
